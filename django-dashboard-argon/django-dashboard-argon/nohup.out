@@ -1,0 +1,11 @@
+Watching for file changes with StatReloader
+[03/Feb/2021 12:28:27] "GET / HTTP/1.1" 302 0
+[03/Feb/2021 12:28:28] "GET /login/?next=/ HTTP/1.1" 200 9381
+[03/Feb/2021 12:28:29] "GET /static/assets/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js HTTP/1.1" 404 1901
+[03/Feb/2021 12:28:29] "GET /static/assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js HTTP/1.1" 404 1880
+[03/Feb/2021 12:28:29] "GET /static/assets/vendor/jquery/dist/jquery.min.js HTTP/1.1" 404 1832
+[03/Feb/2021 12:28:29] "GET /static/assets/vendor/nucleo/fonts/nucleo-icons.woff2 HTTP/1.1" 304 0
+[03/Feb/2021 12:28:29] "GET /static/assets/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js HTTP/1.1" 404 1901
+[03/Feb/2021 12:28:51] "GET /static/assets/vendor/jquery/dist/jquery.min.js HTTP/1.1" 404 1832
+[03/Feb/2021 12:28:51] "GET /static/assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js HTTP/1.1" 404 1880
+[03/Feb/2021 12:28:51] "GET /static/assets/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js HTTP/1.1" 404 1901

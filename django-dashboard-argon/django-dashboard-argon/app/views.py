@@ -159,17 +159,265 @@ def index(request):
     Draft5 = request.POST.get('Draft5', None)
     context['Draft5'] = Draft5
 
+    q1=date1.split('-')
+    dat1=q1[2]+'-'+q1[1]+'-'+q1[0]
+    q2=date2.split('-')
+    dat2=q2[2]+'-'+q2[1]+'-'+q2[0]
+    q3=date3.split('-')
+    dat3=q3[2]+'-'+q3[1]+'-'+q3[0]
+    q4=date4.split('-')
+    dat4=q4[2]+'-'+q4[1]+'-'+q4[0]
+    q5=date5.split('-')
+    dat5=q5[2]+'-'+q5[1]+'-'+q5[0]
 
-    List_Lat = [Lat1,Lat2,Lat3,Lat4,Lat5]
-    List_Long = [Long1,Long2,Long3,Long4,Long5]
-    List_Date = [date1 ,date2,date3,date4,date5]
-    List_Time = [time1,time2,time3,time4,time5]
-    List_Distance = [Distance1,Distance2,Distance3,Distance4,Distance5]
-    List_Speed = [Speed1,Speed2,Speed3,Speed4,Speed5]
-    List_Draft = [Draft1,Draft2,Draft3,Draft4,Draft5]
+
+    distport = [int(Distance1),int(Distance2),int(Distance3),int(Distance4),int(Distance5)]
+    maxspeed = [18,18,18,18,18]
+    dwt = [int(Draft1),int(Draft2),int(Draft3),int(Draft4),int(Draft5)]
 
 
-    print("LOgggg---------------------",List_Lat[0])
+    ################################################################################################
+
+    id=[int(MsiId),int(MsiId),int(MsiId),int(MsiId),int(MsiId)]
+    time=[dat1+" "+time1, dat2+" "+time2, dat3+" "+time3, dat4+" "+time4, dat5+" "+time5]
+    vtype=[int(vesselType),int(vesselType),int(vesselType),int(vesselType),int(vesselType)]
+    lon=[float(Long1),float(Long2), float(Long3), float(Long4),float(Long5)]
+    lat = [float(Lat1),float(Lat2),float(Lat3),float(Lat4),float(Lat5)]
+
+
+    import datetime
+    import pandas as pd
+    def tlap(n):
+      a= time[n-1]
+      b=time[n]
+      t1=a.split()
+      t2=b.split()
+
+      td1=t1[0].split('-')
+      td2=t2[0].split('-')
+      tt1=t1[1].split(':')
+      tt2=t2[1].split(':')
+
+      a1=[]
+      a2=[]
+
+      ti1= datetime.datetime(int(td1[2]),int(td1[1]),int(td1[0]),int(tt1[0]),int(tt1[1]),0)
+      ti2= datetime.datetime(int(td2[2]),int(td2[1]),int(td2[0]),int(tt2[0]),int(tt2[1]),0)
+
+      c = ti2-ti1
+    
+      minutes = c.total_seconds() / 60
+
+      return minutes
+
+    n=5
+
+    new_data = []
+    count=0
+    rate=0
+    for i in range(1,5):
+      #if(id[i]==id[i-1]):
+        count=count+1
+        t=tlap(i)
+        #tdiffout[i-1]=t/60
+        x=abs(lon[i]-lon[i-1])
+        #lndiff.append(x)
+        y=abs(lat[i]-lat[i-1])
+        #ltdiff.append()
+        #z=(speed[i-1]+speed[i])/2
+        rate=1
+        date=time[i].split()[0]
+        tim= int (time[i].split()[1].split(':')[0])
+        #print(t)
+        if (dwt[i]==dwt[i-1]):
+          dwtdif=0
+        else:
+          dwtdif=1
+
+        if (t!=0):
+
+          #dic={}
+          #dic[id[i]]=rate
+
+          new_list = []
+          new_list.append(id[i])
+          #new_list.append(date)
+          #new_list.append(tim)
+          new_list.append(t)
+          new_list.append(vtype[i])
+          new_list.append(x)
+          new_list.append(y)
+          #new_list.append(z)
+          new_list.append(rate)
+          new_list.append(1)
+          #new_list.append(lon[i-1])
+          #new_list.append(lon[i])
+          #new_list.append(lat[i-1])
+          #new_list.append(lat[i])
+          new_list.append((maxspeed[i]*18)/5)
+          new_list.append(dwtdif)
+          new_list.append(distport[i-1])
+          new_list.append(distport[i])
+
+          new_data.append(new_list)
+      #else:
+       # count=0
+
+    testdata = pd.DataFrame(new_data,columns=['ID','timediff','type','lon','lat','rate','SD','spmax','dwtdiff','d1','d2'])
+
+    td=testdata['timediff']
+    lndiff=testdata['lon']
+    ltdiff=testdata['lat']
+    spmax=testdata['spmax']
+    dwtdiff=testdata['dwtdiff']
+    d1=testdata['d1']
+    d2=testdata['d2']
+
+    #dwtdiff
+
+    for i in range(0,len(new_data)):
+      a=[]
+      for j in range(0,4):
+        a.append(new_data[j][1])
+
+      b=max(a)
+      a.remove(b)
+      total=sum(a)
+      mean = total / len(a) 
+      variance = sum([((x - mean) ** 2) for x in a]) / len(a) 
+      res = variance ** 0.5
+      new_data[i][5]=mean
+      new_data[i][6]=res
+
+    inactivity=[]
+    for i in range (0,4):
+      if (new_data[i][1]<60):
+        inactivity.append(0)
+
+      else:  
+        if (new_data[i][1]>new_data[i][5]+new_data[i][6]):
+          if (new_data[i][1]>1440):
+            inactivity.append(2)
+          else:
+            inactivity.append(1)
+
+        else:
+          inactivity.append(0)
+
+    import numpy as np
+    import pandas as pd
+
+    import tensorflow as tf
+
+    from tensorflow import feature_column
+    import keras
+    from tensorflow.keras import layers
+    from sklearn.model_selection import train_test_split
+    from tensorflow.keras.models import Sequential
+    from tensorflow.keras.layers import Dense
+
+    from keras.models import load_model
+    new_model = keras.models.load_model('DL_model.h5')
+    print(new_model.summary())
+
+    tout=[time[1],time[2],time[3],time[4]]
+    #tdiffout=[0,0,0,0]
+    dp=[]
+    sus=[]
+    typsus=[]
+    conf=[]
+    for i in range (0,4):
+      if (inactivity[i]==0):
+        dp.append(0)
+        sus.append(0)
+        typsus.append(0)
+        conf.append(101)
+
+
+      if (inactivity[i]==2):
+        dp.append(1)
+        sus.append(1)
+        typsus.append(1)
+        conf.append(101)
+        #print('1')
+
+      if (inactivity[i]==1):
+        #print('here')
+        dp.append(1)
+        a=[td[i]/60,lndiff[i],ltdiff[i],spmax[i],dwtdiff[i],d1[i],d2[i]]
+        new_output=new_model.predict([a])
+        label=np.argmax(new_output,axis=1)
+        su=label[0]
+
+        #print(su)
+
+        if (su==0):
+          if (dwtdiff[i]==0):
+            susi=0
+            typsusi=0
+            confi=101
+          else:
+            su=1
+        if (su==1):
+          susi=1
+          typsusi=1
+          if (dwtdiff[i]>0):
+            confi=0.9
+          else:
+            confi=101
+
+
+
+        if (su==2):
+          susi=1
+          typsusi=2
+          confi=1-path/dis
+
+
+        sus.append(susi)
+        typsus.append(typsusi) 
+        conf.append(confi)
+      #print(conf)
+      #print(conf)
+
+    print ('timestamp,timediff, dark, sus, type of sus,conf')
+    for i in range (0,4):
+      print(tout[i],td[i],dp[i],sus[i],typsus[i],conf[i])
+
+    
+    context['sus1']=  sus[0];
+    context['sus2'] = sus[1];
+    context['sus3'] = sus[2];
+    context['sus4'] = sus[3];
+
+    context['time1']=  tout[0];
+    context['time2'] = tout[1];
+    context['time3'] = tout[2];
+    context['time4'] = tout[3];
+
+    context['dark1']=  dp[0];
+    context['dark2'] = dp[1];
+    context['dark3'] = dp[2];
+    context['dark4'] = dp[3];
+
+    context['typsus1'] = typsus[0];
+    context['typsus2'] = typsus[1];
+    context['typsus3'] = typsus[2];
+    context['typsus4'] = typsus[3];
+
+    context['conf1'] = conf[0];
+    context['conf2'] = conf[1];
+    context['conf3'] = conf[2];
+    context['conf4'] = conf[3];
+
+    context['td1'] = td[0];
+    context['td2'] = td[1];
+    context['td3'] = td[2];
+    context['td4'] = td[3];
+
+    #################################################################################################
+
+    #print("LOgggg---------------------",List_Lat[0])
 
     dictionary = {
         "VesselName": Vname,
