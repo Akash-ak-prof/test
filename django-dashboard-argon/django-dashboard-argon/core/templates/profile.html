@@ -1,0 +1,429 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Profile {% endblock title %}
+
+{% block content %}
+
+<div class="header d-flex align-items-center" style="background-color:#000">
+  <video width=100% height="600"  muted autoplay loop>
+  <source src="/static/assets/img/video.mp4" type="video/mp4">
+</video>
+  <!-- Mask -->
+  <span class="mask bg-gradient-default opacity-6"></span>
+<!--  &lt;!&ndash; Header container &ndash;&gt;-->
+  <div class="ml-7 "
+       style="
+        position: fixed;
+        bottom: 70;
+        color: #f1f1f1;
+        width: 100%;
+        padding: 50px;" >
+    <div class="row">
+      <div class="col-lg-12 col-md-15" style="left:40">
+<!--        <h1 class="display-2 text-white ml-2">-->
+<!--&lt;!&ndash;          Hello {{ request.user.username }}&ndash;&gt;-->
+<!--        </h1>-->
+        <h1 class="display-2 text-white">
+          Track Inactivity Data
+        </h1>
+        <p class="text-white mt-3 ml-3 mb-5 ">
+           <b> Effective & Efficient ML model</b>
+        </p>
+      </div>
+    </div>
+    <form class="navbar-search navbar-search-light form-inline mr-sm-3" id="navbar-search-main">
+        <div class="form-group mb-8 ">
+          <div class="input-group input-group-alternative input-group-merge">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fas fa-search"></i></span>
+            </div>
+            <input class="form-control" width="100" placeholder="Vessel Name / MMSI ID" type="text" required>
+          </div>
+        </div>
+        <button onclick="location.href='{% url 'extract' %}'"  class="close" data-action="search-close" data-target="#navbar-search-main" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </form>
+  </div>
+</div>
+<!-- Page content -->
+
+<div class="container-fluid mt--6">
+  <div class="row">
+    <div class="col-xl-4 order-xl-2">
+      <div class="card card-profile">
+        <img src="/static/assets/img/1.jpg" alt="Image placeholder" class="card-img-top">
+        <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
+          <div class="d-flex justify-content-between">
+            <button   onclick="location.href='{% url 'extract' %}'" class="btn btn-sm btn-info  mr-4 ">Track</button>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="card-profile-stats d-flex justify-content-center">
+                <div>
+                  <span class="heading">22</span>
+                  <span class="description">Inactivity</span>
+                </div>
+                <div>
+                  <span class="heading">10</span>
+                  <span class="description">Suspicious</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="text-center">
+            <h5 class="h3" >
+              Houyoshi Express
+<!--              {{ request.user.username }}-->
+            </h5>
+            <div class="h5 font-weight-300">
+              354331000
+            </div>
+
+            <div>
+              <i class="ni education_hat mr-2"></i>You Recently Searched for
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-8 order-xl-1">
+      <div class="card">
+        <div class="card-header">
+          <div class="row align-items-center">
+            <div class="col-8">
+              <h3 class="mb-0">Track Details </h3>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <form action="/index/" method="post" id="Track">
+             {%csrf_token%}
+            <h6 class="heading-small text-muted mb-4">Vessel Details</h6>
+            <div class="pl-lg-4">
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-username">Vessel Name</label>
+                    <input type="text" name="Vesselnm"  step="any" required id="input-username" class="form-control" placeholder="Vesselname" >
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-email">MMSI ID</label>
+                    <input type="number" step="any" required name="MsiId"  id="input-email" class="form-control" placeholder="MsiId">
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-country">Status</label>
+                    <input type="text"  required id="input-postal-code" class="form-control" placeholder="Status" name="Status">
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-country">Vessel Type</label>
+                    <input type="text" required id="VesselType" class="form-control" placeholder="VesselType" name="VesselType">
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-city">SOG (in knots)</label>
+                    <input type="number"  step="any" required id="Sog" class="form-control" placeholder="Speed On Ground " name="SOG">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          <hr class="my-4" />
+          <h6 class="heading-small text-muted mb-4">Instances of Latitude and Latitude</h6>
+          <div class="pl-lg-4">
+            <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-first-name">1st Instance of Latitude</label>
+                    <input type="number" step="any" required name="Lat1" id="input-first-name" class="form-control" placeholder="Latitude">
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-last-name">1st Instance of Longtitude</label>
+                    <input type="number" step="any" required id="input-last-name"  name="Long1"  class="form-control" placeholder="Longitude">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-first-name">2nd Instance of Latitude</label>
+                    <input type="number" step="any" required name="Lat2" class="form-control" placeholder="Latitude">
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-last-name">2nd Instance of Longtitude</label>
+                    <input type="number" step="any" required  name="Long2"  class="form-control" placeholder="Longitude">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-first-name">3rd Instance of Latitude</label>
+                    <input type="number" step="any" required name="Lat3"  class="form-control" placeholder="Latitude">
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-last-name">3rd Instance of Longtitude</label>
+                    <input type="number" step="any" required  name="Long3"  class="form-control" placeholder="Longitude">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-first-name">4th Instance of Latitude</label>
+                    <input type="number" step="any" required name="Lat4"  class="form-control" placeholder="Latitude">
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-last-name">4th Instance of Longtitude</label>
+                    <input type="number"  step="any" required name="Long4"  class="form-control" placeholder="Longitude">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-first-name">5th Instance of Latitude</label>
+                    <input type="number" step="any" required name="Lat5"  class="form-control" placeholder="Latitude">
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-last-name">5th Instance of Longtitude</label>
+                    <input type="number" step="any" required  name="Long5"  class="form-control" placeholder="Longitude">
+                  </div>
+                </div>
+              </div>
+          </div>
+
+
+            <hr class="my-4" />
+            <!-- Address -->
+            <h6 class="heading-small text-muted mb-4">Instances of Timestamp</h6>
+            <div class="pl-lg-4">
+              <div class="row">
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-city">1st Instance of Date</label>
+                    <input type="date" step="any" required id="input-city" class="form-control" placeholder="date" name="Tdate1">
+                  </div>
+                </div>
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-country">1st Instance of Time</label>
+                    <input type="time"  step="any" required id="input-country" class="form-control" placeholder="time" name="Ttime1">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-city1">2nd Instance of Date</label>
+                    <input type="date"  step="any" required id="input-city1" class="form-control" placeholder="date" name="Tdate2">
+                  </div>
+                </div>
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-country1">2nd Instance of Time</label>
+                    <input type="time" id="input-country1"  step="any" required class="form-control" placeholder="time" name="Ttime2">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-city2">3rd Instance of Date</label>
+                    <input type="date" id="input-city2"  step="any" required class="form-control" placeholder="date" name="Tdate3">
+                  </div>
+                </div>
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-country2">3rd Instance of Time</label>
+                    <input type="time" id="input-country2" step="any" required class="form-control" placeholder="time" name="Ttime3">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-city3">4th Instance of Date</label>
+                    <input type="date" id="input-city3" class="form-control"  step="any" required placeholder="date" name="Tdate4">
+                  </div>
+                </div>
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-country3">4th Instance of Time</label>
+                    <input type="time" id="input-country3" class="form-control" step="any" required placeholder="time" name="Ttime4">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-city4">5th Instance of Date</label>
+                    <input type="date" id="input-city4" step="any" required class="form-control" placeholder="date" name="Tdate5">
+                  </div>
+                </div>
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-country4">5th Instance of Time</label>
+                    <input type="time" id="input-country4"  step="any" required class="form-control" placeholder="time" name="Ttime5">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
+          <hr class="my-4" />
+          <h6 class="heading-small text-muted mb-4">Instances of Distance (in Miles) and Speed (in knots)</h6>
+          <div class="pl-lg-4">
+            <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-first">1st Instance of Distance</label>
+                    <input type="number" step="any" required name="Distance1" id="input-first" class="form-control" placeholder="Distance">
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-last">1st Instance of Speed</label>
+                    <input type="number" step="any" required id="input-last"  name="Speed1"  class="form-control" placeholder="Speed">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-first-name">2nd Instance of Distance</label>
+                    <input type="number" step="any" required name="Distance2" class="form-control" placeholder="Distance">
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-last-name">2nd Instance of Speed</label>
+                    <input type="number" step="any" required  name="Speed2"  class="form-control" placeholder="Speed">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-first-name">3rd Instance of Distance</label>
+                    <input type="number" step="any" required name="Distance3"  class="form-control" placeholder="Distance">
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-last-name">3rd Instance of Speed</label>
+                    <input type="number" step="any" required  name="Speed"  class="form-control" placeholder="Speed">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-first-name">4th Instance of Distance</label>
+                    <input type="number" step="any" required name="Distance4"  class="form-control" placeholder="Distance">
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-last-name">4th Instance of Speed</label>
+                    <input type="number"  step="any" required name="Speed4"  class="form-control" placeholder="Speed">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-first-name">5th Instance of Distance</label>
+                    <input type="number" step="any" required name="Distance5"  class="form-control" placeholder="Distance">
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-last-name">5th Instance of Speed</label>
+                    <input type="number" step="any" required  name="Speed5"  class="form-control" placeholder="Speed5">
+                  </div>
+                </div>
+              </div>
+          </div>
+
+
+
+          <hr class="my-4" />
+          <h6 class="heading-small text-muted mb-4">Instances of Draft (in Pounds)</h6>
+          <div class="pl-lg-4">
+            <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-first-name">1st Instance of Draft</label>
+                    <input type="number" step="any" required name="Draft1" class="form-control" placeholder="Draft">
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-last-name">2nd Instance of Draft</label>
+                    <input type="number" step="any" required  name="Draft2"  class="form-control" placeholder="Draft">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-first-name">3rd Instance of Draft</label>
+                    <input type="number" step="any" required name="Draft3" class="form-control" placeholder="Draft">
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-last-name">4th Instance of Draft</label>
+                    <input type="number" step="any" required  name="Draft4"  class="form-control" placeholder="Draft">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-first-name">5th Instance of Latitude</label>
+                    <input type="number" step="any" required name="Draft5"  class="form-control" placeholder="Draft">
+                  </div>
+                </div>
+              </div>
+          </div>
+
+            <!-- Description -->
+
+              <div class="row" >
+                <div class="col-lg-6"style="left:40%">
+                  <div class="form-group  align-items-center">
+                      <button type="submit" form="Track" class="btn btn-dark">Track</button>
+                  </div>
+                </div>
+              </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE --> 
+{% block javascripts %}{% endblock javascripts %}
